@@ -1,0 +1,23 @@
+package com.ecommerce.beta.dto;
+
+import java.util.UUID;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+public class NewOrderDto {
+	
+    UUID addressId;
+    String coupon;
+    String paymentMethod;
+    Float offPrice;
+    String generatedOrderUuid;
+}

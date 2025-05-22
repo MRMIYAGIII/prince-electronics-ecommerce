@@ -1,0 +1,606 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Join AGORA - Create Your Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        .navbar {
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
+            padding: 1.25rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .navbar-brand {
+            color: #ffffff;
+            font-size: 1.75rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .navbar-brand:hover {
+            color: #dbeafe;
+            transform: scale(1.05);
+        }
+        .hero-section {
+            background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            padding: 4rem 2rem;
+            text-align: center;
+            color: #ffffff;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-content h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .hero-content p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .signup-card {
+            background: #ffffff;
+            border-radius: 1.25rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            padding: 3rem;
+            max-width: 640px;
+            margin: 2rem auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .signup-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .signup-header h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .signup-header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+        .form-group {
+            margin-bottom: 1.75rem;
+            position: relative;
+        }
+        .form-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            display: block;
+            transition: color 0.3s ease;
+        }
+        .input-group {
+            position: relative;
+        }
+        .form-control {
+            border: 1px solid #d1d5db;
+            border-radius: 0.75rem;
+            padding: 0.875rem 1.25rem;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+            background: #ffffff;
+            transform: translateY(-2px);
+        }
+        .input-icon {
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            transition: color 0.3s ease;
+        }
+        .validation-icon.valid {
+            color: #22c55e;
+        }
+        .validation-icon.invalid {
+            color: #ef4444;
+        }
+        .help-text {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        .error-message {
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            animation: slideIn 0.5s ease;
+            border-left: 4px solid #b91c1c;
+        }
+        .password-strength {
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        .password-strength.strength-weak {
+            background: #ef4444;
+            width: 33%;
+        }
+        .password-strength.strength-medium {
+            background: #f59e0b;
+            width: 66%;
+        }
+        .password-strength.strength-strong {
+            background: #22c55e;
+            width: 100%;
+        }
+        .btn-register {
+            background: linear-gradient(to right, #3b82f6, #1e3a8a);
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        .btn-register:hover:not(:disabled) {
+            background: linear-gradient(to right, #2563eb, #1e3a8a);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .btn-register:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        .signin-link {
+            text-align: center;
+            margin-top: 2rem;
+            color: #6b7280;
+            font-size: 1rem;
+        }
+        .signin-link a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .signin-link a:hover {
+            color: #1e3a8a;
+            text-decoration: underline;
+        }
+        .row-custom {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .col-custom {
+            flex: 1;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 1rem;
+            }
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            .hero-content p {
+                font-size: 1rem;
+            }
+            .signup-card {
+                padding: 2rem;
+                margin: 1.5rem;
+            }
+            .row-custom {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .signup-card {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            .signup-header h2 {
+                font-size: 1.75rem;
+            }
+            .btn-register {
+                padding: 0.875rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="container mx-auto px-4">
+        <a class="navbar-brand" href="/">AGORA</a>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>Welcome to AGORA</h1>
+        <p>Join our vibrant marketplace to explore exclusive products and start your shopping journey today!</p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4">
+    <div class="signup-card">
+        <div class="signup-header">
+            <h2>Join AGORA</h2>
+            <p>Create your account and dive into the marketplace</p>
+        </div>
+
+        <form th:action="@{/app/registerUser}" th:object="${userInfo}" method="post" class="needs-validation" novalidate>
+            <!-- Error Messages -->
+            <div th:if="${signupError == 'username'}" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> An account with this username already exists.
+                <a href="/resetPassword" class="underline text-blue-600 hover:text-blue-800">Forgot Password?</a>
+            </div>
+            <div th:if="${signupError == 'email'}" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> An account with this email already exists.
+                <a href="/resetPassword" class="underline text-blue-600 hover:text-blue-800">Forgot Password?</a>
+            </div>
+            <div th:if="${signupError == 'phone'}" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> An account with this phone number already exists.
+                <a href="/resetPassword" class="underline text-blue-600 hover:text-blue-800">Forgot Password?</a>
+            </div>
+            <div th:if="${signupError == 'invalidData'}" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> <span th:errors="*{email}">Invalid email format</span>
+            </div>
+            <div th:if="${signupError == 'passwordMismatch'}" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> Passwords do not match.
+            </div>
+            <div th:if="${signupError == 'invalidRole'}" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> Please select a valid account type.
+            </div>
+            <div th:if="${signupError == 'roleError'}" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> Error creating role. Please try again.
+            </div>
+            <div th:if="${signupError == 'serverError'}" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i> An unexpected error occurred. Please try again.
+            </div>
+
+            <!-- Validation Errors -->
+            <div th:if="${#fields.hasErrors('userInfo.*')}" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span th:errors="*{username}">Invalid username</span>
+                <span th:errors="*{email}">Invalid email</span>
+                <span th:errors="*{phone}">Invalid phone</span>
+            </div>
+
+            <!-- Name Fields -->
+            <div class="row-custom">
+                <div class="col-custom">
+                    <div class="form-group">
+                        <label class="form-label" for="firstName">First Name</label>
+                        <div class="input-group">
+                            <input oninput="validate()" id="firstName" type="text" class="form-control"
+                                   th:field="*{firstName}" placeholder="Enter your first name" required aria-describedby="firstNameHelp">
+                            <i class="fas fa-user input-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-custom">
+                    <div class="form-group">
+                        <label class="form-label" for="lastName">Last Name</label>
+                        <div class="input-group">
+                            <input oninput="validate()" id="lastName" type="text" class="form-control"
+                                   th:field="*{lastName}" placeholder="Enter your last name" required aria-describedby="lastNameHelp">
+                            <i class="fas fa-user input-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Username -->
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <div class="input-group">
+                    <input oninput="validate(); validateUsername()" id="username" type="text" class="form-control"
+                           th:field="*{username}" placeholder="Choose a unique username" required aria-describedby="usernameHelp">
+                    <i id="usernameIcon" class="fas fa-user input-icon"></i>
+                </div>
+                <small id="usernameHelp" class="help-text">
+                    <i class="fas fa-info-circle"></i> Username must be lowercase letters, numbers, dots, or underscores only. No spaces allowed.
+                </small>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label class="form-label" for="email">Email Address</label>
+                <div class="input-group">
+                    <input oninput="validate(); validateEmail()" id="email" type="email" class="form-control"
+                           th:field="*{email}" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                           placeholder="your.email@domain.com" required aria-describedby="emailHelp">
+                    <i id="emailIcon" class="fas fa-envelope input-icon"></i>
+                </div>
+                <small id="emailHelp" class="help-text">
+                    <i class="fas fa-info-circle"></i> We'll use this email for account verification and important updates.
+                </small>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group">
+                <label class="form-label" for="phone">Phone Number</label>
+                <div class="input-group">
+                    <input oninput="validate(); validatePhone()" id="phone" type="tel" class="form-control"
+                           th:field="*{phone}" placeholder="+1234567890" required aria-describedby="phoneHelp">
+                    <i id="phoneIcon" class="fas fa-phone input-icon"></i>
+                </div>
+                <small id="phoneHelp" class="help-text">
+                    <i class="fas fa-info-circle"></i> Include country code (e.g., +1 for US, +44 for UK, +91 for India).
+                </small>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label class="form-label" for="pass1">Password</label>
+                <div class="input-group">
+                    <input type="password" oninput="validate(); checkPasswordStrength()" class="form-control"
+                           th:field="*{password}" placeholder="Create a strong password" required id="pass1" aria-describedby="passwordHelp">
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+                <div id="passwordStrength" class="password-strength"></div>
+                <small id="passwordHelp" class="help-text">
+                    <i class="fas fa-info-circle"></i> Use lowercase letters, numbers, dots, and underscores. Minimum 6 characters recommended.
+                </small>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+                <label class="form-label" for="pass2">Confirm Password</label>
+                <div class="input-group">
+                    <input type="password" oninput="validate()" class="form-control"
+                           th:field="*{confirm_password}" placeholder="Re-enter your password" required id="pass2" aria-describedby="confirmPasswordHelp">
+                    <i id="confirmIcon" class="fas fa-lock input-icon"></i>
+                </div>
+            </div>
+
+            <!-- Role Selection -->
+            <div class="form-group">
+                <label class="form-label" for="roleName">Account Type</label>
+                <div class="input-group">
+                    <select oninput="validate()" th:field="*{role.roleName}" class="form-control" id="roleName" required aria-describedby="roleHelp">
+                        <option value="" disabled selected>Choose your account type</option>
+                        <option value="ROLE_USER">Customer - Browse and purchase products</option>
+                        <option value="ROLE_ADMIN">Administrator - Manage store and products</option>
+                    </select>
+                    <i class="fas fa-chevron-down input-icon"></i>
+                </div>
+                <small id="roleHelp" class="help-text">
+                    <i class="fas fa-info-circle"></i> Select the type of account that best fits your needs.
+                </small>
+            </div>
+
+            <!-- Register Button -->
+            <div class="form-group">
+                <button disabled id="registerButton" type="submit" class="btn-register">
+                    <i class="fas fa-user-plus"></i> Create My Account
+                </button>
+            </div>
+        </form>
+
+        <!-- Sign In Link -->
+        <div class="signin-link">
+            Already have an account? <a href="/login">Sign in here</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateRegrex(text) {
+        const usernameRegex = /^[a-z0-9_.]+$/;
+        return usernameRegex.test(text);
+    }
+
+    function validateEmail() {
+        const email = document.getElementById("email").value;
+        const emailIcon = document.getElementById("emailIcon");
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (email && emailRegex.test(email)) {
+            emailIcon.className = "fas fa-check validation-icon valid";
+        } else if (email) {
+            emailIcon.className = "fas fa-times validation-icon invalid";
+        } else {
+            emailIcon.className = "fas fa-envelope input-icon";
+        }
+    }
+
+    function validateUsername() {
+        const username = document.getElementById("username").value;
+        const usernameIcon = document.getElementById("usernameIcon");
+
+        if (username && validateRegrex(username)) {
+            usernameIcon.className = "fas fa-check validation-icon valid";
+        } else if (username) {
+            usernameIcon.className = "fas fa-times validation-icon invalid";
+        } else {
+            usernameIcon.className = "fas fa-user input-icon";
+        }
+    }
+
+    function validatePhone() {
+        const phone = document.getElementById("phone").value;
+        const phoneIcon = document.getElementById("phoneIcon");
+        const phoneRegex = /^\+\d{7,15}$/;
+
+        if (phone && phoneRegex.test(phone)) {
+            phoneIcon.className = "fas fa-check validation-icon valid";
+        } else if (phone) {
+            phoneIcon.className = "fas fa-times validation-icon invalid";
+        } else {
+            phoneIcon.className = "fas fa-phone input-icon";
+        }
+    }
+
+    function checkPasswordStrength() {
+        const password = document.getElementById("pass1").value;
+        const strengthBar = document.getElementById("passwordStrength");
+
+        if (password.length === 0) {
+            strengthBar.className = "password-strength";
+            return;
+        }
+
+        let strength = 0;
+        if (password.length >= 6) strength++;
+        if (password.length >= 8) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[a-z]/.test(password)) strength++;
+        if (/[._]/.test(password)) strength++;
+
+        if (strength <= 2) {
+            strengthBar.className = "password-strength strength-weak";
+        } else if (strength <= 3) {
+            strengthBar.className = "password-strength strength-medium";
+        } else {
+            strengthBar.className = "password-strength strength-strong";
+        }
+    }
+
+    function validate() {
+        const pass1 = document.getElementById("pass1").value;
+        const pass2 = document.getElementById("pass2").value;
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const roleName = document.getElementById("roleName").value;
+        const registerBtn = document.getElementById("registerButton");
+        const confirmIcon = document.getElementById("confirmIcon");
+
+        // Validate password confirmation
+        if (pass2) {
+            if (pass1 === pass2) {
+                confirmIcon.className = "fas fa-check validation-icon valid";
+            } else {
+                confirmIcon.className = "fas fa-times validation-icon invalid";
+            }
+        } else {
+            confirmIcon.className = "fas fa-lock input-icon";
+        }
+
+        // Check if all fields are filled
+        if (!firstName || !lastName || !username || !email || !phone || !pass1 || !pass2 || !roleName) {
+            registerBtn.disabled = true;
+            return;
+        }
+
+        // Check role selection
+        if (!roleName) {
+            registerBtn.disabled = true;
+            return;
+        }
+
+        // Check password match
+        if (pass1 !== pass2) {
+            registerBtn.disabled = true;
+            return;
+        }
+
+        // Check username and password format
+        if (!validateRegrex(username) || !validateRegrex(pass1)) {
+            registerBtn.disabled = true;
+            return;
+        }
+
+        // Check phone format
+        const phoneRegex = /^\+\d{7,15}$/;
+        if (!phoneRegex.test(phone)) {
+            registerBtn.disabled = true;
+            return;
+        }
+
+        // Check email format
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            registerBtn.disabled = true;
+            return;
+        }
+
+        // All validations passed
+        registerBtn.disabled = false;
+    }
+
+    // Initialize validation on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        validate();
+        // Add focus animation to inputs
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('.form-label').style.color = '#3b82f6';
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.querySelector('.form-label').style.color = '#1f2937';
+            });
+        });
+    });
+</script>
+</body>
+</html>

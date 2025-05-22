@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <title>Dashboard</title>
+  <meta name="description" content="" />
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+  <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="/assets/css/demo.css" />
+  <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+  <script src="/assets/vendor/js/helpers.js"></script>
+  <script src="/assets/js/config.js"></script>
+</head>
+<body>
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+      <div class="app-brand demo">
+        <a href="/dashboard/admin" class="app-brand-link">
+                        <span class="app-brand-logo demo">
+                            <img src="/images/icons/logo-01.png" alt="IMG-LOGO" width="100px">
+                        </span>
+        </a>
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+          <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+      </div>
+      <div class="menu-inner-shadow"></div>
+      <ul class="menu-inner py-1">
+        <li class="menu-item">
+          <a href="/dashboard/admin" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <div data-i18n="Analytics">Dashboard</div>
+          </a>
+        </li>
+        <li class="menu-item active">
+          <a href="/dashboard/users" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-user"></i>
+            <div data-i18n="Analytics">Users</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/category/all" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-category"></i>
+            <div data-i18n="Analytics">Categories</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/product/all" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-chip"></i>
+            <div data-i18n="Analytics">Products</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/order/all" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-package"></i>
+            <div data-i18n="Analytics">Orders</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/variant/all" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-carousel"></i>
+            <div data-i18n="Analytics">Variants</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/coupon/all" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-star"></i>
+            <div data-i18n="Analytics">Coupons</div>
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <div class="layout-page">
+      <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+          <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+            <i class="bx bx-menu bx-sm"></i>
+          </a>
+        </div>
+        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+          <div class="navbar-nav align-items-center">
+            <div class="nav-item d-flex align-items-center">
+              <i class="bx bx-search fs-4 lh-0"></i>
+              <input id="searchInput" type="text" class="form-control border-0 shadow-none" placeholder="Search..." aria-label="Search..." />
+              <button class="btn-sm btn-dark" onclick="search()">Search</button>
+            </div>
+          </div>
+          <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <li class="nav-item lh-1 me-3"></li>
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+              <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                <div class="avatar avatar-online">
+                  <img src="/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                </div>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0 me-3">
+                        <div class="avatar avatar-online">
+                          <img src="/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                        </div>
+                      </div>
+                      <div class="flex-grow-1">
+                        <span class="fw-semibold d-block"></span>
+                        <small class="text-muted">Admin</small>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li><div class="dropdown-divider"></div></li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="bx bx-user me-2"></i>
+                    <span class="align-middle">My Profile</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="bx bx-cog me-2"></i>
+                    <span class="align-middle">Settings</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                                            <span class="d-flex align-items-center align-middle">
+                                                <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                                                <span class="flex-grow-1 align-middle">Billing</span>
+                                                <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                                            </span>
+                  </a>
+                </li>
+                <li><div class="dropdown-divider"></div></li>
+                <li>
+                  <a class="dropdown-item" href="/logout">
+                    <i class="bx bx-power-off me-2"></i>
+                    <span class="align-middle">Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <div class="row">
+            <input type="hidden" id="sortOrder" th:value="${sort}" />
+            <div class="card">
+              <h5 class="card-header">Users</h5>
+              <div th:if="${empty}" class="alert alert-warning" role="alert">No results found!</div>
+              <div th:unless="${empty}" class="table-responsive text-nowrap">
+                <div class="d-flex justify-content-end">
+                  <a href="/createUser" type="button" class="btn btn-success btn-sm">Create</a>
+                </div>
+                <table class="table table-striped table-hover">
+                  <thead>
+                  <tr>
+                    <th style="width: 5%;">#</th>
+                    <th style="width: 35%;" onclick="sortTable('uuid')"><a href="#">ID</a></th>
+                    <th style="width: 15%;" onclick="sortTable('firstName')"><a href="#">Name</a></th>
+                    <th style="width: 10%;" onclick="sortTable('username')"><a href="#">Username</a></th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="user, rowIndex : ${users}" th:field="${user}" th:class="${user.enabled ? 'table-default' : 'table-danger'}">
+                    <td th:text="${rowIndex.count + (currentPage * pageSize)}"></td>
+                    <td th:text="${user.uuid}"></td>
+                    <td th:text="${user.firstName + ' ' + user.lastName}"></td>
+                    <td th:text="${user.username}"></td>
+                    <td>
+                                                    <span th:text="${user.role.roleName == 'ROLE_ADMIN' ? 'ADMIN' : 'USER'}" th:class="${user.role.roleName == 'ROLE_ADMIN' ? 'badge bg-danger me-1' : 'badge bg-warning me-1'}">
+                                                        Active
+                                                    </span>
+                    </td>
+                    <td>
+                      <a th:href="@{/dashboard/users/{uuid}(uuid=${user.uuid})}" class="edit" title="Edit" data-toggle="tooltip"><i class="bx bx-right-arrow-circle me-1"></i></a>
+                      <a th:href="@{/dashboard/users/delete/{uuid}(uuid=${user.uuid})}" class="delete-link" data-toggle="modal" data-target="#delete-confirm-modal"><i class="bx bx-trash me-1"></i></a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+                <div class="pagination d-flex justify-content-end mt-3">
+                  <ul class="pagination">
+                    <li class="page-item prev" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                      <a class="page-link" th:href="@{/dashboard/users(page=0, sort=${sort}, field=${field})}"><i class="tf-icon bx bx-chevrons-left"></i></a>
+                    </li>
+                    <li class="page-item" th:each="pageNum : ${#numbers.sequence(startPage, endPage)}" th:classappend="${pageNum == currentPage ? 'active' : ''}">
+                      <a class="page-link" th:href="@{/dashboard/users(page=${pageNum}, sort=${sort}, field=${field})}" th:text="${pageNum + 1}"></a>
+                    </li>
+                    <li class="page-item next" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                      <a class="page-link" th:href="@{/dashboard/users(page=${totalPages - 1}, sort=${sort}, field=${field})}"><i class="tf-icon bx bx-chevrons-right"></i></a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                  <p th:text="'Page ' + ${currentPage + 1} + ' of ' + ${totalPages}"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="delete-confirm-modal-label" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="delete-confirm-modal-label">Confirm deletion</h5>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete this item?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="delete-confirm-btn">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="content-footer footer bg-footer-theme"></footer>
+        <div class="content-backdrop fade"></div>
+      </div>
+    </div>
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+  <script src="/assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="/assets/vendor/libs/popper/popper.js"></script>
+  <script src="/assets/vendor/js/bootstrap.js"></script>
+  <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="/assets/vendor/js/menu.js"></script>
+  <script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/dashboards-analytics.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+        $("#search").on("keyup", function() {
+            var term = $(this).val().toLowerCase();
+            $("table tbody tr").each(function(){
+                $row = $(this);
+                var name = $row.find("td:nth-child(2)").text().toLowerCase();
+                if(name.search(term) < 0){
+                    $row.hide();
+                } else{
+                    $row.show();
+                }
+            });
+        });
+        $('.delete').on('click', function() {
+            var userId = $(this).closest('tr').find('td:first-child').text();
+            $('#deleteUserButton').attr('href', '/app/admin/delete/' + userId);
+        });
+        $('#confirmDeleteModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var userId = button.data('user-id');
+            var confirmDeleteButton = $(this).find('#confirmDeleteButton');
+            confirmDeleteButton.attr('href', '/app/admin/delete/' + userId);
+        });
+        $(document).on("click", ".delete-link", function(e) {
+            e.preventDefault();
+            var deleteUrl = $(this).attr("href");
+            $("#delete-confirm-modal").modal("show");
+            $("#delete-confirm-modal").on("click", "#delete-confirm-btn", function() {
+                window.location.href = deleteUrl;
+            });
+        });
+    });
+    /*<![CDATA[*/
+    function sortTable(field) {
+        var sort = document.getElementById("sortOrder").value;
+        if (sort === "ASC" || sort === "") {
+            sort = "DESC";
+        } else {
+            sort = "ASC";
+        }
+        var currentPage = /*[[${currentPage}]]*/ 0;
+        var pageSize = /*[[${pageSize}]]*/ 15;
+        window.location.href = "/dashboard/users?page=" + currentPage + "&size=" + pageSize + "&field=" + field + "&sort=" + sort;
+    }
+    /*]]>*/
+    function search(){
+        var sort = "ASC";
+        var currentPage = 0;
+        var pageSize = 15;
+        var field = "username";
+        window.location.href = "/dashboard/users?page=" + currentPage + "&size=" + pageSize + "&field=" + field + "&sort=" + sort + "&keyword=" + document.getElementById("searchInput").value;
+    }
+  </script>
+  <script src="js/userSort.js"></script>
+
+</body>
+</html>

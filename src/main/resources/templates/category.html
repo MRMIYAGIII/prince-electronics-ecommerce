@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Category - [[${categoryName}]]</title>
+  <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"/>
+  <link type="text/css" rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="title">[[${categoryName}]]</h3>
+      </div>
+      <div class="col-md-12">
+        <div class="row">
+          <div th:each="product, iter : ${products.content}" class="col-md-3 col-sm-6 col-xs-6 product">
+            <div class="product-img">
+              <img th:if="${product.images != null and !product.images.isEmpty()}" th:src="@{|/Uploads/${product.images[0].fileName}|}" alt="Product Image" />
+              <img th:unless="${product.images != null and !product.images.isEmpty()}" src="/img/placeholder.png" alt="No Image Available" />
+            </div>
+            <div class="product-body">
+              <p class="product-category" th:text="${product.category.name}">Category</p>
+              <h3 class="product-name"><a th:href="@{/productDetail(productUuid=${product.uuid})}" th:text="${product.name}">Product Name</a></h3>
+              <h4 class="product-price"><span th:text="'RW' + ${product.price}"></span></h4>
+              <div class="product-rating">
+                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+              </div>
+            </div>
+            <div class="add-to-cart">
+              <form th:action="@{/products/add-to-cart/{id}(id=${product.uuid})}" method="post">
+                <input type="hidden" name="qty" value="1">
+                <button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- Pagination -->
+        <div class="row">
+          <div class="col-md-12">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" th:class="${products.first} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/category(id=${categoryUuid}, page=0)}">First</a>
+              </li>
+              <li class="page-item" th:class="${products.first} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/category(id=${categoryUuid}, page=${products.number - 1})}">Previous</a>
+              </li>
+              <li th:each="pageNum : ${#numbers.sequence(0, products.totalPages - 1)}" class="page-item"
+                  th:class="${pageNum == products.number} ? 'active' : ''">
+                <a class="page-link" th:href="@{/category(id=${categoryUuid}, page=${pageNum})}"
+                   th:text="${pageNum + 1}">1</a>
+              </li>
+              <li class="page-item" th:class="${products.last} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/category(id=${categoryUuid}, page=${products.number + 1})}">Next</a>
+              </li>
+              <li class="page-item" th:class="${products.last} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/category(id=${categoryUuid}, page=${products.totalPages - 1})}">Last</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
