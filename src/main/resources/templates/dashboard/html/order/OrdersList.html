@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        lang="en"
+        class="light-style layout-menu-fixed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+  />
+  <title>Orders</title>
+  <meta name="description" content="" />
+  <link rel="icon" type="image/x-icon" href="/assets/img/favicon/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+          rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+  <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="/assets/css/demo.css" />
+  <link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+  <script src="/assets/vendor/js/helpers.js"></script>
+  <script src="/assets/js/config.js"></script>
+</head>
+<body>
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+      <div class="app-brand demo">
+        <a href="/dashboard/admin" class="app-brand-link">
+              <span class="app-brand-logo demo">
+              <img src="/images/icons/logo-01.png" alt="IMG-LOGO" width="100px">
+              </span>
+        </a>
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+          <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+      </div>
+      <div class="menu-inner-shadow"></div>
+      <ul class="menu-inner py-1">
+        <li class="menu-item">
+          <a href="/dashboard/admin" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <div data-i18n="Analytics">Dashboard</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/dashboard/users" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-user"></i>
+            <div data-i18n="Analytics">Users</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/category/all" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-category"></i>
+            <div data-i18n="Analytics">Categories</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/product/all" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-chip"></i>
+            <div data-i18n="Analytics">Products</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/variant/all" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-carousel"></i>
+            <div data-i18n="Analytics">Variants</div>
+          </a>
+        </li>
+        <li class="menu-item active">
+          <a href="/order/all" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-package"></i>
+            <div data-i18n="Analytics">Orders</div>
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <div class="layout-page">
+      <nav
+              class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+              id="layout-navbar"
+      >
+        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+          <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+            <i class="bx bx-menu bx-sm"></i>
+          </a>
+        </div>
+        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+          <div class="navbar-nav align-items-center">
+            <div class="input-group">
+              <input type="text" class="form-control" aria-label="Text input with segmented dropdown button" id="searchBox">
+              <button type="button" class="btn btn-outline-dark dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" style="">
+                <li><a class="dropdown-item" onclick="filterOrder('ONLINE')">ONLINE</a></li>
+                <li><a class="dropdown-item" onclick="filterOrder('COD')">COD</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" onclick="filterOrder('PROCESSING')">PROCESSING</a></li>
+                <li><a class="dropdown-item" onclick="filterOrder('SHIPPED')">SHIPPED</a></li>
+                <li><a class="dropdown-item" onclick="filterOrder('DELIVERED')">DELIVERED</a></li>
+                <li><a class="dropdown-item" onclick="filterOrder('CANCELLED')">CANCELLED</a></li>
+                <li><a class="dropdown-item" onclick="filterOrder('RETURNED')">RETURNED</a></li>
+                <li><a class="dropdown-item" onclick="filterOrder('REFUNDED')">REFUNDED</a></li>
+                <li><a class="dropdown-item" onclick="filterOrder('PAYMENT_PENDING')">PAYMENT PENDING</a></li>
+              </ul>
+              <input type="hidden" th:value="${filter}" id="filterValue">
+              <button type="button" class="btn btn-outline-dark" onclick="searchOrder()">Search</button>
+            </div>
+          </div>
+          <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+              <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                <div class="avatar avatar-online">
+                  <img src="/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                </div>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0 me-3">
+                        <div class="avatar avatar-online">
+                          <img src="/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                        </div>
+                      </div>
+                      <div class="flex-grow-1">
+                        <span class="fw-semibold d-block"></span>
+                        <small class="text-muted">Admin</small>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <div class="dropdown-divider"></div>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="bx bx-user me-2"></i>
+                    <span class="align-middle">My Profile</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="bx bx-cog me-2"></i>
+                    <span class="align-middle">Settings</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                        <span class="d-flex align-items-center align-middle">
+                          <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                          <span class="flex-grow-1 align-middle">Billing</span>
+                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                        </span>
+                  </a>
+                </li>
+                <li>
+                  <div class="dropdown-divider"></div>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/logout">
+                    <i class="bx bx-power-off me-2"></i>
+                    <span class="align-middle">Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="content-wrapper">
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <div class="row">
+            <input type="hidden" id="sortOrder" th:value="${sort}">
+            <div class="card">
+              <h5 class="mt-3">Order Management</h5>
+              <div class="">
+                <div class="table-responsive mt-0">
+                  <div class="table-wrapper">
+                    <div class="table-title">
+                      <div class="d-flex justify-content-end">
+                        <a href="/order/create" type="button" class="btn btn-success btn-sm">Create</a>
+                      </div>
+                    </div>
+                    <table th:unless="${empty}" class="table table-striped table-hover">
+                      <thead>
+                      <tr>
+                        <th>#</th>
+                        <th style="width: 30%;" onclick="sortTable('uuid')"><a href="#">ID</a></th>
+                        <th style="width: 17%;" onclick="sortTable('createdAt')"><a href="#">Date</a></th>
+                        <th style="width: 10%;" onclick="sortTable('orderStatus')"><a href="#">Status</a></th>
+                        <th style="width: 10%;" onclick="sortTable('orderType')"><a href="#">Type</a></th>
+                        <th style="width: 10%;" onclick="sortTable('total')"><a href="#">Total</a></th>
+                        <th style="width: 15%;" onclick="sortTable('userInfo.username')"><a href="#">username</a></th>
+                        <th style="width: 10%;">Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr th:each="order, rowIndex : ${orders}" th:field="${order}"
+                          th:class="${#strings.equals(order.orderStatus, 'PAYMENT_PENDING') ? 'table-secondary' :
+                               (order.deleted ? 'table-danger' : 'table-default')}"
+                      >
+                        <td th:text="${rowIndex.count + (currentPage * pageSize)}"></td>
+                        <td>
+                          <a th:href="@{/order/{uuid}(uuid=${order.uuid})}" th:text="${order.uuid}"></a>
+                        </td>
+                        <td th:text="${order.getFormattedCreatedAt}"></td>
+                        <td>
+                              <span th:text="${#strings.equals(order.orderStatus, 'PAYMENT_PENDING') ? 'PAYMENT PENDING' : order.orderStatus}"
+                                    th:class="${#strings.equals(order.orderStatus, 'PROCESSING') ? 'badge bg-success me-1' :
+                                              #strings.equals(order.orderStatus, 'SHIPPED') ? 'badge bg-primary me-1' :
+                                              #strings.equals(order.orderStatus, 'DELIVERED') ? 'badge bg-primary me-1' :
+                                              #strings.equals(order.orderStatus, 'CANCELLED') ? 'badge bg-danger me-1' :
+                                              #strings.equals(order.orderStatus, 'RETURNED') ? 'badge bg-primary me-1' :
+                                              #strings.equals(order.orderStatus, 'REFUNDED') ? 'badge bg-info me-1' :
+                                              #strings.equals(order.orderStatus, 'PAYMENT_PENDING') ? 'badge bg-danger me-1' :
+                                              #strings.equals(order.orderStatus, 'RETURN_REQUESTED') ? 'badge bg-warning me-1' :
+                                              'badge bg-label-default me-1'}">
+                              </span>
+                        </td>
+                        <td th:text="${order.orderType}"></td>
+                        <td th:text="${#numbers.formatDecimal(order.getGross(), 0, 0)}"></td>
+                        <td th:text="${order.userInfo.username}"></td>
+                        <td>
+                          <a th:href="@{/order/{uuid}(uuid=${order.uuid})}" class="btn btn-sm btn-primary">Edit</a>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                    <div th:if="${empty}" class="alert alert-warning mt-3" role="alert">
+                      No orders found!
+                    </div>
+                    <div th:unless="${empty}" class="pagination d-flex justify-content-end mt-3">
+                      <ul class="pagination">
+                        <li class="page-item prev" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                          <a class="page-link" th:href="@{/order/all(page=0, sort=${sort}, field=${field}, filter=${filter}, keyword=${keyword})}"><i class="tf-icon bx bx-chevrons-left"></i></a>
+                        </li>
+                        <li class="page-item" th:each="pageNum : ${#numbers.sequence(startPage, endPage)}" th:classappend="${pageNum == currentPage ? 'active' : ''}">
+                          <a class="page-link" th:href="@{/order/all(page=${pageNum}, sort=${sort}, field=${field}, filter=${filter}, keyword=${keyword})}" th:text="${pageNum + 1}"></a>
+                        </li>
+                        <li class="page-item next" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                          <a class="page-link" th:href="@{/order/all(page=${totalPages - 1}, sort=${sort}, field=${field}, filter=${filter}, keyword=${keyword})}"><i class="tf-icon bx bx-chevrons-right"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                      <p th:text="'Page ' + ${currentPage + 1} + ' of ' + ${totalPages}"></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="delete-confirm-modal-label" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="delete-confirm-modal-label">Confirm deletion</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to delete this item?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn btn-danger" id="delete-confirm-btn">Delete</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="content-footer footer bg-footer-theme"></footer>
+        <div class="content-backdrop fade"></div>
+      </div>
+    </div>
+  </div>
+  <div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<script src="/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/assets/vendor/libs/popper/popper.js"></script>
+<script src="/assets/vendor/js/bootstrap.js"></script>
+<script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="/assets/vendor/js/menu.js"></script>
+<script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/dashboards-analytics.js"></script>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+  $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+      $("#search").on("keyup", function() {
+          var term = $(this).val().toLowerCase();
+          $("table tbody tr").each(function(){
+              $row = $(this);
+              var name = $row.find("td:nth-child(6)").text().toLowerCase();
+              console.log(name);
+              if(name.search(term) < 0){
+                  $row.hide();
+              } else{
+                  $row.show();
+              }
+          });
+      });
+  });
+
+  $(document).ready(function() {
+    $('.delete').on('click', function() {
+      var orderId = $(this).closest('tr').find('td:first-child').text();
+      $('#deleteOrderButton').attr('href', '/app/order/delete/' + orderId);
+    });
+  });
+
+  $(document).ready(function() {
+      $('#confirmDeleteModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var orderId = button.data('order-id');
+        var confirmDeleteButton = $(this).find('#confirmDeleteButton');
+        confirmDeleteButton.attr('href', '/app/order/delete/' + orderId);
+      });
+  });
+
+  $(document).on("click", ".delete-link", function(e) {
+      e.preventDefault();
+      var deleteUrl = $(this).attr("href");
+      $("#delete-confirm-modal").modal("show");
+      $("#delete-confirm-modal").on("click", "#delete-confirm-btn", function() {
+          window.location.href = deleteUrl;
+      });
+  });
+
+  function sortTable(field) {
+      var sort = document.getElementById("sortOrder").value;
+      var searchBox = document.getElementById("searchBox").value;
+      var filterValue = document.getElementById("filterValue").value;
+
+      if (sort === "ASC" || sort === "") {
+        sort = "DESC";
+      } else {
+        sort = "ASC";
+      }
+
+      var currentPage = /*[[${currentPage}]]*/ 0;
+      var pageSize = /*[[${pageSize}]]*/ 15;
+
+      window.location.href = "/order/all?page=" + currentPage + "&size=" + pageSize + "&field=" + field + "&sort=" + sort + "&keyword=" + searchBox + "&filter=" + filterValue;
+  }
+
+  function searchOrder(){
+      var searchBox = document.getElementById("searchBox").value;
+     if(searchBox == ""){
+        window.location.href = "/order/all";
+      }else{
+        window.location.href = "/order/all?keyword=" + searchBox;
+      }
+  }
+
+  function filterOrder(filter){
+     window.location.href = "/order/all?filter=" + filter;
+  }
+
+  function resetList(){
+     window.location.href = "/order/all";
+  }
+</script>
+</body>
+</html>

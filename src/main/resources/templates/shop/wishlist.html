@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agora - Your Wishlist</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"/>
+  <link type="text/css" rel="stylesheet" href="/css/slick.css"/>
+  <link type="text/css" rel="stylesheet" href="/css/slick-theme.css"/>
+  <link type="text/css" rel="stylesheet" href="/css/nouislider.min.css"/>
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+  <link type="text/css" rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+<header>
+  <div id="top-header">
+    <div class="container">
+      <ul class="header-links pull-left">
+        <li><a href="https://www.google.com/maps/place/Adventist+University+of+Central+Africa,+Science+and+Technology+Centre/@-1.9554066,30.1014876,17z/data=!4m14!1m7!3m6!1s0x19dca6f907feabf7:0x207b54b64c8ffb34!2sAdventist+University+of+Central+Africa,+Science+and+Technology+Centre!8m2!3d-1.9555621!4d30.1042181!16s%2Fg%2F1w0nblzf!3m5!1s0x19dca6f907feabf7:0x207b54b64c8ffb34!8m2!3d-1.9555621!4d30.1042181!16s%2Fg%2F1w0nblzf?entry=ttu&g_ep=EgoyMDI1MDUxNS4xIKXMDSoASAFQAw%3D%3D"><i class="fa fa-map-marker"></i>KG 230 St</a></li>
+        <li><a href="#"><i class="fa fa-phone"></i>+250-788-867-910</a></li>
+        <li><a href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJqXxbtjVLDGvtqXXSqZmCHnMdjxLrTNPHrrRBPLvRNhHzrHZFrPfNBfqtXCjHDfJDZVpML"><i class="fa fa-envelope-o"></i>ecommerceprince567@gmail.com</a></li>
+      </ul>
+      <ul class="header-links pull-right">
+        <th:block th:if="${loggedIn}">
+          <li class="ml-3"><a th:href="@{/profile}"><i class="fa fa-user-o"></i> My Account</a></li>
+          <li class="ml-3"><a th:href="@{/orders}"> Orders</a></li>
+          <li class="ml-3"><a th:href="@{/logout}">Logout</a></li>
+        </th:block>
+        <th:block th:unless="${loggedIn}">
+          <li class="ml-3"><a th:href="@{/login}"><i class="fa fa-sign-in"></i> Login</a></li>
+        </th:block>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="header-logo">
+            <a th:href="@{/}" class="logo">
+              <img src="/img/logo.png" alt="Agora Logo">
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="header-search">
+            <form onsubmit="search(); return false;">
+              <select class="input-select">
+                <option value="0">All Categories</option>
+                <th:block th:each="category : ${categories}">
+                  <option th:value="${category.uuid}" th:text="${category.name}"></option>
+                </th:block>
+              </select>
+              <input id="searchInput" class="input" placeholder="Search here">
+              <button class="search-btn" onclick="search()">Search</button>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-3 clearfix">
+          <div class="header-ctn">
+            <div>
+              <a th:href="@{/wishlist}">
+                <i class="fa fa-heart-o"></i>
+                <span>Your Wishlist</span>
+                <div class="qty" th:text="${wishlistCount != null ? wishlistCount : 0}">0</div>
+              </a>
+            </div>
+            <div class="dropdown">
+              <a th:href="@{/viewCart}">
+                <i class="fa fa-shopping-cart"></i>
+                <span>Your Cart</span>
+                <div class="qty" th:text="${cartCount != null ? cartCount : 0}">0</div>
+              </a>
+            </div>
+            <div class="menu-toggle">
+              <a href="#">
+                <i class="fa fa-bars"></i>
+                <span>Menu</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-title">
+          <h3 class="title">Your Wishlist</h3>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <th:block th:if="${wishlistItems.isEmpty()}">
+          <div class="alert alert-info text-center">
+            Your wishlist is empty. <a th:href="@{/}">Browse products</a> to add items!
+          </div>
+        </th:block>
+        <th:block th:unless="${wishlistItems.isEmpty()}">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="wishlistItem : ${wishlistItems}">
+                <td>
+                  <div class="product">
+                    <div class="product-img">
+                      <img th:if="${wishlistItem.productId.images != null and !wishlistItem.productId.images.isEmpty()}"
+                           th:src="@{|/Uploads/${wishlistItem.productId.images[0].fileName}|}"
+                           alt="Product Image" style="width: 100px; height: auto;" />
+                      <img th:unless="${wishlistItem.productId.images != null and !wishlistItem.productId.images.isEmpty()}"
+                           src="/img/placeholder.png"
+                           alt="No Image Available" style="width: 100px; height: auto;" />
+                    </div>
+                    <div class="product-body" style="margin-left: 10px;">
+                      <h3 class="product-name">
+                        <a th:href="@{/productDetail(productUuid=${wishlistItem.productId.uuid})}"
+                           th:text="${wishlistItem.productId.name}">Product Name</a>
+                      </h3>
+                      <p class="product-category" th:text="${wishlistItem.productId.category.name}">Category</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <h4 class="product-price" th:text="'RW' + ${wishlistItem.productId.price}">RW0</h4>
+                </td>
+                <td>
+                  <form th:action="@{/products/add-to-cart/{id}(id=${wishlistItem.productId.uuid})}" method="post" class="d-inline">
+                    <input type="hidden" name="qty" value="1">
+                    <button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                  </form>
+                  <form th:action="@{/wishlist/remove/{id}(id=${wishlistItem.uuid})}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Remove</button>
+                  </form>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </th:block>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer id="footer">
+  <div class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 col-xs-6">
+          <div class="footer">
+            <h3 class="footer-title">About Us</h3>
+            <p>we are passionate about making technology accessible to everyone. From high-performance laptops and smartphones to essential accessories and professional cameras, we offer quality products at competitive prices. Our mission is to deliver a seamless online shopping experience backed by secure payments, fast delivery, and excellent customer service.</p>
+            <ul class="footer-links">
+              <li><a href="https://www.google.com/maps/place/Adventist+University+of+Central+Africa,+Science+and+Technology+Centre/@-1.9554066,30.1014876,17z/data=!4m14!1m7!3m6!1s0x19dca6f907feabf7:0x207b54b64c8ffb34!2sAdventist+University+of+Central+Africa,+Science+and+Technology+Centre!8m2!3d-1.9555621!4d30.1042181!16s%2Fg%2F1w0nblzf!3m5!1s0x19dca6f907feabf7:0x207b54b64c8ffb34!8m2!3d-1.9555621!4d30.1042181!16s%2Fg%2F1w0nblzf?entry=ttu&g_ep=EgoyMDI1MDUxNS4xIKXMDSoASAFQAw%3D%3D"><i class="fa fa-map-marker"></i>KG 230 St</a></li>
+              <li><a href="#"><i class="fa fa-phone"></i>+250-788-867-910</a></li>
+              <li><a href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJqXxbtjVLDGvtqXXSqZmCHnMdjxLrTNPHrrRBPLvRNhHzrHZFrPfNBfqtXCjHDfJDZVpML"><i class="fa fa-envelope-o"></i>ecommerceprince567@gmail.com</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="bottom-footer" class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <ul class="footer-payments">
+            <li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
+            <li><a href="#"><i class="fa fa-credit-card"></i></a></li>
+            <li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
+            <li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
+            <li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
+            <li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
+          </ul>
+          <span class="copyright">
+                        Copyright ©<script>document.write(new Date().getFullYear());</script> All rights reserved
+                    </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/slick.min.js"></script>
+<script src="/js/nouislider.min.js"></script>
+<script src="/js/jquery.zoom.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+  function search() {
+      var categoryId = document.querySelector('.input-select').value;
+      var keyword = document.getElementById('searchInput').value;
+      var url = '/?keyword=' + encodeURIComponent(keyword);
+      if (categoryId !== '0') {
+          url += '&filter=' + encodeURIComponent(categoryId);
+      }
+      window.location.href = url;
+  }
+</script>
+<div th:if="${param.added}" class="alert alert-success" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1000;">Added to cart!</div>
+<div th:if="${param.removed}" class="alert alert-success" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1000;">Removed from wishlist!</div>
+<div th:if="${param.error == 'addToCartFailed'}" class="alert alert-danger" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1000;">Failed to add to cart.</div>
+<div th:if="${param.error == 'removeFromWishlistFailed'}" class="alert alert-danger" style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1000;">Failed to remove from wishlist.</div>
+</body>
+</html>
