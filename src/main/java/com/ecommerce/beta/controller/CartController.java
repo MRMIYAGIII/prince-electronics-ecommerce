@@ -40,7 +40,7 @@ import com.razorpay.RazorpayClient;
 @Controller
 @RequestMapping("/cart")
 public class CartController {
-	
+
     @Autowired
     CartService cartService;
     @Autowired
@@ -60,11 +60,11 @@ public class CartController {
 
     @Value("${razorpay.keySecret}")
     private String razorpayKeySecret;
-    
+
     @Autowired
     RazorpayClient razorpayClient;
-  
- 
+
+
     @GetMapping("/delete/{uuid}")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public String delete(@PathVariable UUID uuid){
@@ -83,51 +83,51 @@ public class CartController {
         List<Cart> cartItems = cartService.findByUser(userInfo);
 
         if(!cartItems.isEmpty()){
-        	if(newOrderDto.getPaymentMethod().equals("Online")) {
-        		 List<OrderItems> orderItemsList = new ArrayList<>();
+            if(newOrderDto.getPaymentMethod().equals("Online")) {
+                List<OrderItems> orderItemsList = new ArrayList<>();
 
-                 OrderHistory orderHistory = new OrderHistory();
-                 orderHistory.setOrderStatus(OrderStatus.PAID);
-                 orderHistory.setOrderType(OrderType.ONLINE);
-                 orderHistory.setUserInfo(userInfo);
-                 orderHistory.setUserAddress(userAddressService.findById(newOrderDto.getAddressId()));
-                 orderHistory = orderHistoryRepository.save(orderHistory);
+                OrderHistory orderHistory = new OrderHistory();
+                orderHistory.setOrderStatus(OrderStatus.PAID);
+                orderHistory.setOrderType(OrderType.ONLINE);
+                orderHistory.setUserInfo(userInfo);
+                orderHistory.setUserAddress(userAddressService.findById(newOrderDto.getAddressId()));
+                orderHistory = orderHistoryRepository.save(orderHistory);
 
-                 for (Cart item : cartItems) {
-     //
+                for (Cart item : cartItems) {
+                    //
 //                     if (item.getQuantity() > item.getVariant().getStock()) {
 //                         item.setQuantity(item.getVariant().getStock());
 //                     }
 
-                     if (item.getQuantity() != 0) { //if itemQty == 0, after the previous if condition, it means that the product has gone out of stock.
-                         OrderItems orderItem = new OrderItems();
+                    if (item.getQuantity() != 0) { //if itemQty == 0, after the previous if condition, it means that the product has gone out of stock.
+                        OrderItems orderItem = new OrderItems();
 //                         orderItem.setVariant(item.getVariant());
-                         orderItem.setQuantity(item.getQuantity());
-                         orderItem.setOrderPrice(item.getProductId().getPrice().intValue());
-                         orderItem.setOrderHistory(orderHistory);;
-                         orderItem.setProductId(item.getProductId());
-                         orderItemsList.add(orderItem);
-                     }
-                 }
+                        orderItem.setQuantity(item.getQuantity());
+                        orderItem.setOrderPrice(item.getProductId().getPrice().intValue());
+                        orderItem.setOrderHistory(orderHistory);;
+                        orderItem.setProductId(item.getProductId());
+                        orderItemsList.add(orderItem);
+                    }
+                }
 
-                 CouponValidityResponseDto couponValidityResponseDto = cartService.checkCouponValidity();
+                CouponValidityResponseDto couponValidityResponseDto = cartService.checkCouponValidity();
 
-                 float gross = (float) couponValidityResponseDto.getCartTotal();
-                 float tax = gross / 100f *18f;
-                 float total = gross - tax;
+                float gross = (float) couponValidityResponseDto.getCartTotal();
+                float tax = gross / 100f *18f;
+                float total = gross - tax;
 
-                 //Create Order
+                //Create Order
 
-                 orderHistory.setTotal(total);
-                 orderHistory.setTax(tax);
-                 orderHistory.setGross(gross);
-                 orderHistory.setItems(orderItemsList);
-                 
-                 if(userInfo.getCoupon()!=null) {
-                 	couponService.redeem(userInfo.getCoupon().getCode()) ;
-                 }
+                orderHistory.setTotal(total);
+                orderHistory.setTax(tax);
+                orderHistory.setGross(gross);
+                orderHistory.setItems(orderItemsList);
 
-                 orderHistory = orderHistoryService.save(orderHistory);
+                if(userInfo.getCoupon()!=null) {
+                    couponService.redeem(userInfo.getCoupon().getCode()) ;
+                }
+
+                orderHistory = orderHistoryService.save(orderHistory);
 
 //                 for (OrderItems item : orderItemsList) {
 //                     //reduce stock
@@ -136,60 +136,60 @@ public class CartController {
 //                     variantService.save(variant);
 //                 }
 
-                 //Delete items from cart
-                 for (Cart item : cartItems) {
-                     cartService.delete(item);
-                     System.out.println("Cart Cleared for User:" + userInfo.getUsername());
-                 }
-             	
-                 return "redirect:/pay?orderUuid=" + orderHistory.getUuid() + "&newOrderFlag=true";
-		
-        	}else {
-            System.out.println("Processing COD order from user:"+userInfo.getUsername());
-            List<OrderItems> orderItemsList = new ArrayList<>();
+                //Delete items from cart
+                for (Cart item : cartItems) {
+                    cartService.delete(item);
+                    System.out.println("Cart Cleared for User:" + userInfo.getUsername());
+                }
 
-            OrderHistory orderHistory = new OrderHistory();
-            orderHistory.setOrderStatus(OrderStatus.PROCESSING);
-            orderHistory.setOrderType(OrderType.COD);
-            orderHistory.setUserInfo(userInfo);
-            orderHistory.setUserAddress(userAddressService.findById(newOrderDto.getAddressId()));
-            orderHistory = orderHistoryRepository.save(orderHistory);
+                return "redirect:/pay?orderUuid=" + orderHistory.getUuid() + "&newOrderFlag=true";
 
-            for (Cart item : cartItems) {
+            }else {
+                System.out.println("Processing COD order from user:"+userInfo.getUsername());
+                List<OrderItems> orderItemsList = new ArrayList<>();
+
+                OrderHistory orderHistory = new OrderHistory();
+                orderHistory.setOrderStatus(OrderStatus.PROCESSING);
+                orderHistory.setOrderType(OrderType.COD);
+                orderHistory.setUserInfo(userInfo);
+                orderHistory.setUserAddress(userAddressService.findById(newOrderDto.getAddressId()));
+                orderHistory = orderHistoryRepository.save(orderHistory);
+
+                for (Cart item : cartItems) {
 //
 //                if (item.getQuantity() > item.getVariant().getStock()) {
 //                    item.setQuantity(item.getVariant().getStock());
 //                }
 
-                if (item.getQuantity() != 0) { //if itemQty == 0, after the previous if condition, it means that the product has gone out of stock.
-                    OrderItems orderItem = new OrderItems();
+                    if (item.getQuantity() != 0) { //if itemQty == 0, after the previous if condition, it means that the product has gone out of stock.
+                        OrderItems orderItem = new OrderItems();
 //                    orderItem.setVariant(item.getVariant());
-                    orderItem.setQuantity(item.getQuantity());
-                    orderItem.setOrderPrice(item.getProductId().getPrice().intValue());
-                    orderItem.setOrderHistory(orderHistory);;
-                    orderItem.setProductId(item.getProductId());
-                    orderItemsList.add(orderItem);
+                        orderItem.setQuantity(item.getQuantity());
+                        orderItem.setOrderPrice(item.getProductId().getPrice().intValue());
+                        orderItem.setOrderHistory(orderHistory);;
+                        orderItem.setProductId(item.getProductId());
+                        orderItemsList.add(orderItem);
+                    }
                 }
-            }
 
-            CouponValidityResponseDto couponValidityResponseDto = cartService.checkCouponValidity();
+                CouponValidityResponseDto couponValidityResponseDto = cartService.checkCouponValidity();
 
-            float gross = (float) couponValidityResponseDto.getCartTotal();
-            float tax = gross / 100f *18f;
-            float total = gross - tax;
+                float gross = (float) couponValidityResponseDto.getCartTotal();
+                float tax = gross / 100f *18f;
+                float total = gross - tax;
 
-            //Create Order
+                //Create Order
 
-            orderHistory.setTotal(total);
-            orderHistory.setTax(tax);
-            orderHistory.setGross(gross);
-            orderHistory.setItems(orderItemsList);
-            
-            if(userInfo.getCoupon()!=null) {
-            	couponService.redeem(userInfo.getCoupon().getCode()) ;
-            }
+                orderHistory.setTotal(total);
+                orderHistory.setTax(tax);
+                orderHistory.setGross(gross);
+                orderHistory.setItems(orderItemsList);
 
-            orderHistory = orderHistoryService.save(orderHistory);
+                if(userInfo.getCoupon()!=null) {
+                    couponService.redeem(userInfo.getCoupon().getCode()) ;
+                }
+
+                orderHistory = orderHistoryService.save(orderHistory);
 
 //            for (OrderItems item : orderItemsList) {
 //                //reduce stock
@@ -198,15 +198,15 @@ public class CartController {
 //                variantService.save(variant);
 //            }
 
-            //Delete items from cart
-            for (Cart item : cartItems) {
-                cartService.delete(item);
-                System.out.println("Cart Cleared for User:" + userInfo.getUsername());
+                //Delete items from cart
+                for (Cart item : cartItems) {
+                    cartService.delete(item);
+                    System.out.println("Cart Cleared for User:" + userInfo.getUsername());
+                }
+
+                return "redirect:/orderDetails?orderId=" + orderHistory.getUuid() + "&newOrderFlag=true";
             }
-        	
-            return "redirect:/orderDetails?orderId=" + orderHistory.getUuid() + "&newOrderFlag=true";
-        	}
-        	
+
         }else{
             //fetch order from orderHistory and convert to COD.
             System.out.println("Converting Order to COD");
@@ -222,7 +222,7 @@ public class CartController {
             return "redirect:/orderDetails?orderId=" + order.getUuid() + "&newOrderFlag=true";
 
         }
-        
+
     }
 //    @GetMapping("/pay")
 //    public String initiatePayment(Model model, @RequestParam("orderUuid") UUID orderUuid) {
@@ -250,27 +250,27 @@ public class CartController {
 //        return "redirect:/viewCart";
 //    }
 
-    
+
     @PostMapping("/apply-coupon")
     public String applyCoupon(@RequestParam("couponCode") String coupon,
-    		@RequestParam double cartTotal,Model model) {
-    	
-    	String currentUsername = String.valueOf(getCurrentUsername());
+                              @RequestParam double cartTotal,Model model) {
+
+        String currentUsername = String.valueOf(getCurrentUsername());
         UserInfo userInfo = userInfoService.findByUsername(currentUsername);
-        
-   	
-    	if(couponService.findByCode(coupon)!=null&& coupon.equals(couponService.findByCode(coupon).getCode())) {
-    		System.out.println(couponService.findByCode(coupon).getCode());    		
-    		couponService.saveToUser(couponService.findByCode(coupon));
-    		System.out.println("Coupon Valid");
-    			
-    	}else {
-    		
-    		System.out.println("Coupon invalid");
-    	}
-    	return "redirect:/viewCart";
-    }    
-		
+
+
+        if(couponService.findByCode(coupon)!=null&& coupon.equals(couponService.findByCode(coupon).getCode())) {
+            System.out.println(couponService.findByCode(coupon).getCode());
+            couponService.saveToUser(couponService.findByCode(coupon));
+            System.out.println("Coupon Valid");
+
+        }else {
+
+            System.out.println("Coupon invalid");
+        }
+        return "redirect:/viewCart";
+    }
+
     //getting current username
     public String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
