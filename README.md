@@ -56,11 +56,12 @@ This is a comprehensive ecommerce platform that allows users to browse and purch
 - Git for version control
 - GitHub for code hosting
 
-### INSTALLATION :
+### INSTALLATION FOR LOCAL TESTING:
 
 - Navigate on **code** and download the project's zip file
 - Extract the zip file in your file explorer
 - Open the extracted folder with INTELLIJ IDEA(Recommended)
+- Navigate to **application.properties** and use your preferred database credentials(locally)
 - Navigate to the terminal
 - **RUN:** 'mvn clean install' && 'mvn spring-boot:run'
 - In your browser run: 'localhost:8084' and get started.
