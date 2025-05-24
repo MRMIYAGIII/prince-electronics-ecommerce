@@ -1,6 +1,6 @@
 # Electronics Ecommerce Project
 
-This is a full-stack ecommerce project developed using Java Spring Boot for the backend and a combination of HTML, CSS, Bootstrap, JavaScript, and Thymeleaf for the frontend. This project was developed in Eclipse IDE.
+This is a full-stack ecommerce project developed using Java Spring Boot for the backend and a combination of HTML, CSS, Bootstrap, JavaScript, and Thymeleaf for the frontend. This project was developed in **INTELLIJ IDEA**.
 
 The application is deployed on Render and can be accessed at: [https://prince-electronics-ecommerce-3.onrender.com](https://prince-electronics-ecommerce-3.onrender.com)
 
