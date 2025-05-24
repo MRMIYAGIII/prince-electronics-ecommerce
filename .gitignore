@@ -1,13 +1,5 @@
-# Ignore Maven build artifacts
 target/
 
-# Ignore IntelliJ IDEA files
-.idea/
-*.iws
-*.iml
-*.ipr
-
-# Ignore Spring Tool Suite (STS) files (if applicable)
 .apt_generated
 .classpath
 .factorypath
@@ -16,7 +8,6 @@ target/
 .springBeans
 .sts4-cache
 
-# Ignore NetBeans files (if applicable)
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -24,16 +15,4 @@ target/
 /.nb-gradle/
 build/
 
-# Ignore VS Code files (if applicable)
 .vscode/
-
-# Ignore sensitive configuration files
-src/main/resources/application.properties
-
-# Ignore OS-specific files
-*.log
-.DS_Store
-
-# Ignore local Docker files (if any)
-docker-compose.yml.local
-*.dockerignore.local
