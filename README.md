@@ -21,6 +21,9 @@ This is a comprehensive ecommerce platform that allows users to browse and purch
 
 ## Features
 
+- **SIGN UP AS AN ADMIN:** Register as an admin and navigate the dashboard to add products
+- **N.B:** While adding products, you have to use images with **JPEG**, **JPG** OR **PNG** **EXTENTIONS** 
+- **CUSTOMERS/USERS:** you have to add shipping address in order to proceed to checkout, otherwise the products remain in **cart**.
 - **ROLE BASED:** Access is restricted based on roles: ADMIN and USER. i.e: Users with ADMIN role, are directed to dashboard upon login, while users with role USER are directed to home page to help them navigate through products and shop accordingly.
 - **Upon Registration:** You are able to register as an ADMIN or a USER/CUSTOMER
 - **USERNAME CREATION:** Usernames must be in small letters, no spaces.
