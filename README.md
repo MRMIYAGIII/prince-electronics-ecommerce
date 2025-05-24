@@ -62,6 +62,5 @@ This is a comprehensive ecommerce platform that allows users to browse and purch
 - Go to application.properties and change the database credentials to run the web app locally
 
 
-###  USAGE
-
-- Use this link to access the application online: 
+## Deployment
+The application is deployed on Render and can be accessed at: [https://prince-electronics-ecommerce-3.onrender.com](https://prince-electronics-ecommerce-3.onrender.com)
